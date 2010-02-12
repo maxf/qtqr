@@ -1,7 +1,9 @@
+var cellSize = 20; // size of a single cell in pixels
+
 
 var qrEl = document.getElementById('qr');
 var sizeEl = document.getElementById('size');
-var size = 1;
+var size = 4;
 
 sizeEl.onchange=function(){
   var option=this.options[this.selectedIndex];
@@ -11,10 +13,10 @@ sizeEl.onchange=function(){
 
 function toggle(cellId) {
   var cell=document.getElementById(cellId);
-  if (cell.className=="white") {
-    cell.className="black";
+  if (cell.className.baseVal=="white") {
+    cell.className.baseVal="black";
   } else {
-    cell.className="white";
+    cell.className.baseVal="white";
   }
 }
 
@@ -23,8 +25,9 @@ function go() {
   qrEl.innerHTML = qrcode(size,text);
 }
 
-qrEl.innerHTML = qrcode(size, "here comes qr!");
+//qrEl.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200"><circle cx="150" cy="100" r="50" /></svg>';
 
+qrEl.innerHTML = qrcode(size, "here comes qr!");
 
 
 
@@ -41,27 +44,27 @@ function qrcode(size,text) {
   }
 
 
-	output.push("<table style='border-width: 0px; border-style: none; border-color: #0000ff; border-collapse: collapse;'>");
+//	output.push("<table style='border-width: 0px; border-style: none; border-color: #0000ff; border-collapse: collapse;'>");
 
-	for (var r = 0; r < qr.getModuleCount(); r++) {
+  var moduleCount = qr.getModuleCount();
 
-	    output.push("<tr>");
+	output.push("<svg xmlns='http://www.w3.org/2000/svg' width='"+cellSize*moduleCount+"px' height='"+cellSize*moduleCount+"px'>");
 
-	    for (var c = 0; c < qr.getModuleCount(); c++) {
 
-	        if (qr.isDark(r, c) ) {
-	        output.push("<td class=\"black\" id='cell"+r+"-"+c+"' onclick='toggle(\"cell"+r+"-"+c+"\")'/>");
-	        } else {
-	            output.push("<td class=\"white\" id='cell"+r+"-"+c+"' onclick='toggle(\"cell"+r+"-"+c+"\")'/>");
-	        }
+	for (var r = 0; r < moduleCount; r++) {
+
+	    output.push("<g>");
+
+	    for (var c = 0; c < moduleCount; c++) {
+        output.push("<rect id='cell"+r+"-"+c+"' onclick='toggle(\"cell"+r+"-"+c+"\")' class='"+(qr.isDark(r,c)?"black":"white")+"' x='"+c*cellSize+"px' y='"+r*cellSize+"px' width='"+cellSize+"px' height='"+cellSize+"px'></rect>");
 
 	    }
 
-	    output.push("</tr>");
+	    output.push("</g>");
 
 	}
 
-	output.push("</table>");
+	output.push("</svg>");
 
   return output.join(" ");
 }
