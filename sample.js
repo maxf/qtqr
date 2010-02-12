@@ -25,8 +25,6 @@ function go() {
   qrEl.innerHTML = qrcode(size,text);
 }
 
-//qrEl.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200"><circle cx="150" cy="100" r="50" /></svg>';
-
 var originalText = "here comes qr!";
 document.getElementById("text").value=originalText;
 qrEl.innerHTML = qrcode(size, originalText);
@@ -46,8 +44,6 @@ function qrcode(size,text) {
   }
 
 
-//	output.push("<table style='border-width: 0px; border-style: none; border-color: #0000ff; border-collapse: collapse;'>");
-
   var moduleCount = qr.getModuleCount();
 
 	output.push("<svg xmlns='http://www.w3.org/2000/svg' width='"+cellSize*moduleCount+"px' height='"+cellSize*moduleCount+"px'>");
@@ -64,6 +60,10 @@ function qrcode(size,text) {
   return output.join(" ");
 }
 
+
+/*
+ * Mark potentially dangerous areas to tamper with
+ */
 function hazardousAreas(cellSize, moduleCount) {
   var output = [];
   // Finder patterns
