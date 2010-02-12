@@ -27,7 +27,9 @@ function go() {
 
 //qrEl.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200"><circle cx="150" cy="100" r="50" /></svg>';
 
-qrEl.innerHTML = qrcode(size, "here comes qr!");
+var originalText = "here comes qr!";
+document.getElementById("text").value=originalText;
+qrEl.innerHTML = qrcode(size, originalText);
 
 
 
@@ -49,22 +51,26 @@ function qrcode(size,text) {
   var moduleCount = qr.getModuleCount();
 
 	output.push("<svg xmlns='http://www.w3.org/2000/svg' width='"+cellSize*moduleCount+"px' height='"+cellSize*moduleCount+"px'>");
-
+  output.push(hazardousAreas(cellSize, moduleCount));
 
 	for (var r = 0; r < moduleCount; r++) {
-
 	    output.push("<g>");
-
 	    for (var c = 0; c < moduleCount; c++) {
         output.push("<rect id='cell"+r+"-"+c+"' onclick='toggle(\"cell"+r+"-"+c+"\")' class='"+(qr.isDark(r,c)?"black":"white")+"' x='"+c*cellSize+"px' y='"+r*cellSize+"px' width='"+cellSize+"px' height='"+cellSize+"px'></rect>");
-
 	    }
-
 	    output.push("</g>");
-
 	}
-
 	output.push("</svg>");
-
   return output.join(" ");
 }
+
+function hazardousAreas(cellSize, moduleCount) {
+  var output = [];
+  // Finder patterns
+  output.push("<g id='hazards'>");
+  output.push("<rect id='finder-top-left' x='0px' y='0px' width='"+8*cellSize+"px' height='"+8*cellSize+"px' class='hazard'></rect>");
+  output.push("<rect id='finder-top-right' x='"+(cellSize*moduleCount-8*(cellSize))+"px' y='0px' width='"+8*cellSize+"px' height='"+8*cellSize+"px' class='hazard'></rect>");
+  output.push("<rect id='finder-bottom-right' y='"+(cellSize*moduleCount-8*(cellSize))+"px' x='0px' width='"+8*cellSize+"px' height='"+8*cellSize+"px' class='hazard'></rect>");
+  output.push("</g>");
+  return output.join(" ");
+};
