@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  td {
+    width:10px; height:10px;
+    border-width: 0px; border-style: none; border-color: #0000ff; border-collapse: collapse; padding: 0; margin: 0; 
+  }
+
+  .black { background-color: black }
+  .white { background-color: white }
+
+
+</style>
+</head>
+<body>
+<p>Text: <input type="text" id="text"/>
+Size: <select id="size">
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+<option>7</option>
+<option>8</option>
+<option>9</option>
+<option>10</option>
+</select>
+ <input type="button" value="Go" onclick="go()"/></p>
+
+<div id="qr" style="margin: 40px"></div>
+
+<script type="text/javascript" src="qrcode.js"></script>
+<script type="text/javascript" src="sample.js"></script>
+</body>
+</html>
