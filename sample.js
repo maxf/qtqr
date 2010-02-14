@@ -1,9 +1,14 @@
-var cellSize = 20; // size of a single cell in pixels
-
+var size = 4; // QR code size (version)
+var cellSize = 15; // size of a single cell in pixels
+var imageURL;
+var displayImage;
 
 var qrEl = document.getElementById('qr');
 var sizeEl = document.getElementById('size');
-var size = 4;
+var cellSizeEl = document.getElementById('cellSize');
+var toggleImageEl = document.getElementById('toggleImage');
+
+var imageGrabbed;
 
 sizeEl.onchange=function(){
   var option=this.options[this.selectedIndex];
@@ -11,7 +16,13 @@ sizeEl.onchange=function(){
   if (val!=NaN) size=val;
 };
 
-function toggle(cellId) {
+cellSizeEl.onchange=function(){
+  var option=this.options[this.selectedIndex];
+  var val = parseInt(option.value);
+  if (val!=NaN) cellSize=val;
+};
+
+function toggleCell(cellId) {
   var cell=document.getElementById(cellId);
   if (cell.className.baseVal=="white") {
     cell.className.baseVal="black";
@@ -22,6 +33,8 @@ function toggle(cellId) {
 
 function go() {
   var text = document.getElementById("text").value;
+  imageURL = document.getElementById("imageURL").value;
+  displayImage = document.getElementById('toggleImage').checked;
   qrEl.innerHTML = qrcode(size,text);
 }
 
@@ -46,20 +59,44 @@ function qrcode(size,text) {
 
   var moduleCount = qr.getModuleCount();
 
-	output.push("<svg xmlns='http://www.w3.org/2000/svg' width='"+cellSize*moduleCount+"px' height='"+cellSize*moduleCount+"px'>");
+	output.push("<svg xmlns:xlink='http://www.w3.org/1999/xlink' xmlns='http://www.w3.org/2000/svg' width='"+cellSize*moduleCount+"px' height='"+cellSize*moduleCount+"px'>");
   output.push(hazardousAreas(cellSize, moduleCount));
 
 	for (var r = 0; r < moduleCount; r++) {
 	    output.push("<g>");
 	    for (var c = 0; c < moduleCount; c++) {
-        output.push("<rect id='cell"+r+"-"+c+"' onclick='toggle(\"cell"+r+"-"+c+"\")' class='"+(qr.isDark(r,c)?"black":"white")+"' x='"+c*cellSize+"px' y='"+r*cellSize+"px' width='"+cellSize+"px' height='"+cellSize+"px'></rect>");
+        output.push("<rect id='cell"+r+"-"+c+"' onclick='toggleCell(\"cell"+r+"-"+c+"\")' class='"+(qr.isDark(r,c)?"black":"white")+"' x='"+c*cellSize+"px' y='"+r*cellSize+"px' width='"+cellSize+"px' height='"+cellSize+"px'></rect>");
 	    }
 	    output.push("</g>");
 	}
+
+  if (displayImage && imageURL && imageURL!="") {
+    output.push('<image id="image" onmousemove="imageMove(evt)" onmousedown="imageGrab(evt)" onmouseup="imageRelease(evt)"  x="10px" y="10px" width=\"100px\" height=\"100px\" xlink:href="'+imageURL+'"></image>');
+  }
+
 	output.push("</svg>");
   return output.join(" ");
 }
 
+var origX, origY;
+
+function imageGrab(e) {
+  imageGrabbed = true;
+  origX = e.clientX;
+  origY = e.clientY;
+}
+
+function imageRelease(e) {
+  imageGrabbed = false;
+}
+
+function imageMove(e) {
+  if (imageGrabbed) {
+    document.getElementById("message").innerHTML = "> "+e.clientX+", "+e.clientY;
+    document.getElementById("image").setAttribute("x",e.clientX - origX);
+    document.getElementById("image").setAttribute("y",e.clientY - origY);
+  }
+}
 
 /*
  * Mark potentially dangerous areas to tamper with
