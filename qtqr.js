@@ -20,19 +20,19 @@ var imageGrabbed=false;
 
 sizeEl.onchange=function(){
   var option=this.options[this.selectedIndex];
-  var val = parseInt(option.value);
+  var val = parseInt(option.value,10);
   if (val!=NaN) size=val;
 };
 
 cellSizeEl.onchange=function(){
   var option=this.options[this.selectedIndex];
-  var val = parseInt(option.value);
+  var val = parseInt(option.value,10);
   if (val!=NaN) cellSize=val;
 };
 
 function imageSizeChange() {
   var val = parseFloat(zoomEl.value);
-  if (parseInt(val) == NaN || val <= 0) val=1;
+  if (parseInt(val,10) == NaN || val <= 0) val=1;
   var imageEl = document.getElementById("image");
   if (imageEl) {
     imageEl.setAttribute("transform","scale("+val+")");
@@ -109,15 +109,15 @@ function qrcode(size,text) {
 function moveImageToggle(e) {
   if (imageGrabbed) {
     imageGrabbed = false;
-    imageOriginX = parseInt(imageEl.getAttribute("x"));
-    imageOriginY = parseInt(imageEl.getAttribute("y"));
+    imageOriginX = parseInt(imageEl.getAttribute("x"),10);
+    imageOriginY = parseInt(imageEl.getAttribute("y"),10);
   } else {
     imageGrabbed = true;
     startingCursorX = e.screenX;
     startingCursorY = e.screenY;
     imageEl = document.getElementById("image");
-    imageOriginX = parseInt(imageEl.getAttribute("x"));
-    imageOriginY = parseInt(imageEl.getAttribute("y"));
+    imageOriginX = parseInt(imageEl.getAttribute("x"),10);
+    imageOriginY = parseInt(imageEl.getAttribute("y"),10);
   }
 }
 
