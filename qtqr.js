@@ -31,7 +31,7 @@ cellSizeEl.onchange=function(){
 };
 
 function imageSizeChange() {
-  var val = parseInt(zoomEl.value);
+  var val = parseFloat(zoomEl.value);
   if (parseInt(val) == NaN || val <= 0) val=1;
   var imageEl = document.getElementById("image");
   if (imageEl) {
