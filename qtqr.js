@@ -1,3 +1,19 @@
+//---------------------------------------------------------------------
+// QTQR
+//
+// Copyright (c) 2010 Max Froumentin
+//
+// URL: http://lapin-bleu.net/software/qtqr
+//
+// Licensed under the MIT license:
+//   http://www.opensource.org/licenses/mit-license.php
+//
+// The word "QR Code" is registered trademark of
+// DENSO WAVE INCORPORATED
+//   http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
 var size = 4; // QR code size (version)
 var cellSize = 15; // size of a single cell in pixels
 var imageSizeMagnification = 1;
